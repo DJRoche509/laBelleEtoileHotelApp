@@ -8,14 +8,15 @@ import jakarta.persistence.Id;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "username", nullable = false, unique = true)
     private  String username;
 
-    @Column (nullable = false, unique = true)
+    @Column (name = "password", nullable = false, unique = true)
     private  String password;
 
-    @Column (nullable = false)
+    @Column (name = "admin",nullable = false)
     private boolean admin;
 }

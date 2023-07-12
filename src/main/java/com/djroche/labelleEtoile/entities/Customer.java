@@ -14,19 +14,32 @@ import lombok.NoArgsConstructor;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "customer_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private User user;
 
-    @Column(nullable = false)
-    private Boolean manager;
-
-    @Column(nullable = false)
+    @Column (name = "firstName", nullable = false)
     private String firstName;
 
-    @Column(nullable = false)
+    @Column (name = "lastName", nullable = false)
     private String lastName;
+
+    @Column (name = "address")
+    private String address;
+
+    @Column (name = "city")
+    private String city;
+
+    @Column (name = "state")
+    private String state;
+
+    @Column (name = "phone")
+    private String phone;
+
+    @Column (name = "email")
+    private String email;
 }

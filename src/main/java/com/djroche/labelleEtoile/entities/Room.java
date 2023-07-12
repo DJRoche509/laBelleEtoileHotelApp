@@ -14,12 +14,12 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "room_id")
-    private Long roomId;
+    private Long id;
 
     @Column(name = "room_type")
     private String roomType;
 
-    @Column(name = "availability")
+    @Column(name = "availability", nullable = false)
     private Boolean availability;
 
     @Column(name = "ready")
@@ -28,6 +28,6 @@ public class Room {
     @Column(name = "price")
     private Integer price;
 
-    @Column(name = "booked")
+    @Column(name = "booked", nullable = false)
     private Boolean booked;
 }
