@@ -22,6 +22,17 @@ public class ReservationStatusHistory {
     @JoinColumn(name = "status_id", nullable = false)
     private ReservationStatus status;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date")
     private LocalDate date;
+
+    public String getStatusName() {
+        return status != null ? status.getStatus() : null;
+    }
+
+    public void setStatusName(String statusName) {
+        if (status == null) {
+            status = new ReservationStatus();
+        }
+        status.setStatus(statusName);
+    }
 }
