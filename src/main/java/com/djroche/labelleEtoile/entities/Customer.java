@@ -1,5 +1,6 @@
 package com.djroche.labelleEtoile.entities;
 
+import com.djroche.labelleEtoile.dtos.CustomerDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,17 +16,17 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id")
-    private Long id;
+    private Long customerId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
 
-    @Column (name = "firstName", nullable = false)
+    @Column (name = "firstName")
     private String firstName;
 
-    @Column (name = "lastName", nullable = false)
+    @Column (name = "lastName")
     private String lastName;
 
     @Column (name = "address")
@@ -42,4 +43,33 @@ public class Customer {
 
     @Column (name = "email")
     private String email;
+
+    /**
+     *
+     * @return {String} the full name of the customer
+     */
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
+    public String getUserUsername() {
+        if (user != null) {
+            return user.getUsername();
+        } else {
+            return "";
+        }
+    }
+
+    public CustomerDto toDto() {
+        CustomerDto customerDto = new CustomerDto();
+        customerDto.setId(customerId);
+        customerDto.setFirstName(firstName);
+        customerDto.setLastName(lastName);
+        customerDto.setAddress(address);
+        customerDto.setCity(city);
+        customerDto.setState(state);
+        customerDto.setPhone(phone);
+        customerDto.setEmail(email);
+        return customerDto;
+    }
 }
