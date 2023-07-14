@@ -13,4 +13,9 @@ import java.io.Serializable;
 public class ReservationStatusDto implements Serializable{
     private Long id;
     private String status;
+
+//    public ReservationStatusDto(ReservationStatus reservationStatus) {
+//        this.id = reservationStatus.getId();
+//        this.status = reservationStatus.getStatus();
+//    }
 }
