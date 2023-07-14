@@ -5,6 +5,7 @@ import com.djroche.labelleEtoile.entities.User;
 import com.djroche.labelleEtoile.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,14 +18,22 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserDto createUser(UserDto userDto) {
-        User user = new User();
-        user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword());
-        user.setAdmin(userDto.getAdmin());
-        User savedUser = userRepository.save(user);
-        userDto.setId(savedUser.getId());
-        return userDto;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+//    public UserDto createUser(UserDto userDto) {
+//        User user = new User();
+//        user.setUsername(userDto.getUsername());
+//        user.setPassword(userDto.getPassword());
+//        user.setAdmin(userDto.getAdmin());
+//        User savedUser = userRepository.save(user);
+//        userDto.setId(savedUser.getId());
+//        return userDto;
+//    }
+
+    public User createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
     }
 
     public UserDto getUserByUsername(String username) {

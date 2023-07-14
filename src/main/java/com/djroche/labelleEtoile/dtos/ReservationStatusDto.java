@@ -12,6 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class ReservationStatusDto implements Serializable{
     private Long id;
+    private Long reservationId;
     private String status;
 
 //    public ReservationStatusDto(ReservationStatus reservationStatus) {

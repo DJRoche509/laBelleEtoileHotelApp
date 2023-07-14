@@ -21,6 +21,9 @@ public class ReservationStatus {
     @Column(name = "status")
     private String status;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reservation_id")
+    private Reservation reservation;
 
     public boolean isActive() {
         return status.equalsIgnoreCase("active");
