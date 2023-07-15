@@ -19,4 +19,30 @@ public class ReservationStatusHistoryDto implements Serializable {
     private ReservationStatusDto status;
 
     private LocalDate date;
+
+    public void setReservationId(Long reservationId) {
+        ReservationDto reservationDto = new ReservationDto();
+        reservationDto.setId(reservationId);
+        this.reservation = reservationDto;
+    }
+
+    public void setStatusName(String statusName) {
+        ReservationStatusDto reservationStatusDto = new ReservationStatusDto();
+        reservationStatusDto.setStatus(statusName);
+        this.status = reservationStatusDto;
+    }
+
+    public void setStatusId(Long statusId) {
+        ReservationStatusDto reservationStatusDto = new ReservationStatusDto();
+        reservationStatusDto.setId(statusId);
+        this.status = reservationStatusDto;
+    }
+
+    public Long getReservationId() {
+        return reservation.getId();
+    }
+
+    public Long getStatusId() {
+        return status.getId();
+    }
 }
