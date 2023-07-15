@@ -43,6 +43,10 @@ public class ReservationStatusService {
         return reservationStatusDto;
     }
 
+    public ReservationStatus getReservationStatusByStatus(String status) {
+        return reservationStatusRepository.findByStatus(status);
+    }
+
     public List<ReservationStatusDto> getAllReservationStatuses() {
         List<ReservationStatus> reservationStatuses = reservationStatusRepository.findAll();
         List<ReservationStatusDto> reservationStatusDtos = new ArrayList<>();
