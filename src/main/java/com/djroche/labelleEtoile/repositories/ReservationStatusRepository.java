@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ReservationStatusRepository extends JpaRepository <ReservationStatus, Long> {
-
+    ReservationStatus findByStatus(String status);
 }
