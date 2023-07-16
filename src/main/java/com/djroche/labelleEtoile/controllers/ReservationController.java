@@ -12,38 +12,42 @@ import java.util.List;
 @RestController
 @RequestMapping("/reservations")
 public class ReservationController {
+
     @Autowired
     private ReservationService reservationService;
 
-    @GetMapping("")
+    // GET /reservations
+    @GetMapping
     public List<ReservationDto> getAllReservations() {
         return reservationService.getAllReservations();
     }
 
-    @PostMapping("")
+    // GET /reservations/{reservationId}
+    @GetMapping("/{reservationId}")
+    public ResponseEntity<ReservationDto> getReservationById(@PathVariable Long reservationId) {
+        ReservationDto reservationDto = new ReservationDto(reservationService.getReservationById(reservationId));
+        return ResponseEntity.ok(reservationDto);
+    }
+
+    // POST /reservations
+    @PostMapping
     public ResponseEntity<ReservationDto> createReservation(@RequestBody ReservationDto reservationDto) {
-        ReservationDto createdReservation = reservationService.createReservation(reservationDto);
-        return new ResponseEntity<>(createdReservation, HttpStatus.CREATED);
+        ReservationDto savedReservationDto = reservationService.createReservation(reservationDto);
+        return new ResponseEntity<>(savedReservationDto, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ReservationDto> getReservationById(@PathVariable Long id) {
-        ReservationDto reservation = reservationService.getReservationById(id).toDto();
-        return new ResponseEntity<>(reservation, HttpStatus.OK);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateReservation(@PathVariable Long id, @RequestBody ReservationDto reservationDto) {
-        if (!id.equals(reservationDto.getId())) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    // PUT /reservations/{reservationId}
+    @PutMapping("/{reservationId}")
+    public ResponseEntity<Void> updateReservation(@PathVariable Long reservationId, @RequestBody ReservationDto reservationDto) {
+        reservationDto.setId(reservationId);
         reservationService.updateReservation(reservationDto);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteReservation(@PathVariable Long id) {
-        reservationService.deleteReservationById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    // DELETE /reservations/{reservationId}
+    @DeleteMapping("/{reservationId}")
+    public ResponseEntity<Void> deleteReservationById(@PathVariable Long reservationId) {
+        reservationService.deleteReservationById(reservationId);
+        return ResponseEntity.noContent().build();
     }
 }
