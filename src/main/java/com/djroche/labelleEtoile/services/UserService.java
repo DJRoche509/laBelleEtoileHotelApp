@@ -46,10 +46,10 @@ public class UserService {
     }
 
     // uses the UserDto class instead of the User entity class in the createUser() method
-    public User createUser(UserDto userDto) {
-        User user = convertToEntity(userDto);
+    public UserDto createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        return convertToDto(savedUser);
     }
 
     public UserDto getUserByUsername(String username) {
