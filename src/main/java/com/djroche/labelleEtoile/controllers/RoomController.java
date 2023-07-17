@@ -5,6 +5,7 @@ import com.djroche.labelleEtoile.entities.RoomType;
 import com.djroche.labelleEtoile.services.RoomService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -17,25 +18,28 @@ public class RoomController {
     @Autowired
     private RoomService roomService;
 
-    @PostMapping("/")
-    public RoomDto createRoom(@RequestBody RoomDto roomDto) {
-        RoomDto createdRoom = roomService.createRoom(roomDto);
-        return createdRoom;
+    @GetMapping("/")
+    public String getAllRooms(Model model) {
+        List<RoomDto> rooms = roomService.getAllRooms();
+        model.addAttribute("rooms", rooms);
+        return "rooms";
     }
 
     @GetMapping("/{id}")
-    public RoomDto getRoomById(@PathVariable Long id) {
+    public String getRoomById(@PathVariable Long id, Model model) {
         RoomDto roomDto = roomService.getRoomById(id);
-        return roomDto;
+        model.addAttribute("room", roomDto);
+        return "room";
     }
 
-    @GetMapping("/")
-    public List<RoomDto> getAllRooms() {
-        List<RoomDto> rooms = roomService.getAllRooms();
-        return rooms;
+    @PostMapping("/")
+    public String createRoom(@ModelAttribute("roomDto") RoomDto roomDto) {
+        roomService.createRoom(roomDto);
+        return "redirect:/rooms";
     }
 
     @GetMapping("/{roomId}/availability")
+    @ResponseBody
     public boolean isRoomAvailable(@PathVariable Long roomId, @RequestParam("dateIn") String dateIn, @RequestParam("dateOut") String dateOut) {
         LocalDate dateInParsed = LocalDate.parse(dateIn);
         LocalDate dateOutParsed = LocalDate.parse(dateOut);
@@ -43,21 +47,25 @@ public class RoomController {
     }
 
     @GetMapping("/{roomId}/ready")
+    @ResponseBody
     public boolean isRoomReady(@PathVariable Long roomId) {
         return roomService.isRoomReady(roomId);
     }
 
     @GetMapping("/{roomId}/booked")
+    @ResponseBody
     public boolean isRoomBooked(@PathVariable Long roomId) {
         return roomService.isRoomBooked(roomId);
     }
 
     @GetMapping("/{roomId}/price")
+    @ResponseBody
     public int getRoomPrice(@PathVariable Long roomId) {
         return roomService.getRoomPrice(roomId);
     }
 
     @GetMapping("/numGuests")
+    @ResponseBody
     public int getNumberOfGuests(@RequestParam("roomType") String roomType) {
         RoomType roomTypeEnum = RoomType.valueOf(roomType);
         return roomService.getNumberOfGuests(roomTypeEnum);
