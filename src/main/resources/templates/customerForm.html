@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" lang="en">
+<   head>
+        <meta charset="UTF-8">
+        <title th:if="${edit}">Edit Customer</title>
+        <title th:unless="${edit}">Add Customer</title>
+    </head>
+    <body>
+        <h1 th:if="${edit}">Edit Customer</h1>
+        <h1 th:unless="${edit}">Add Customer</h1>
+        <form th:object="${customer}" th:action="@{/customers}" method="post">
+            <input type="hidden" th:field="*{id}">
+            <table>
+                <tr>
+                    <td>First Name:</td>
+                    <td><input type="text" th:field="*{firstName}"></td>
+                </tr>
+                <tr>
+                    <td>Last Name:</td>
+                    <td><input type="text" th:field="*{lastName}"></td>
+                </tr>
+                <tr>
+                    <td>Address:</td>
+                    <td><input type="text" th:field="*{address}"></td>
+                </tr>
+                <tr>
+                    <td>City:</td>
+                    <td><input type="text" th:field="*{city}"></td>
+                </tr>
+                <tr>
+                    <td>State:</td>
+                    <td><input type="text" th:field="*{state}"></td>
+                </tr>
+                <tr>
+                    <td>Phone:</td>
+                    <td><input type="text" th:field="*{phone}"></td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td><input type="text" th:field="*{email}"></td>
+                </tr>
+                <tr>
+                    <td>User:</td>
+                    <td><select th:field="*{user}">
+                        <option value="">Select User</option>
+                        <option th:each="user : ${users}" th:value="${user}" th:text="${user.username}"></option>
+                    </select></td>
+                </tr>
+            </table>
+            <br>
+            <button type="submit" th:text="${edit} ? 'Update' : 'Add'">Submit</button>
+            <a href="/customers">Cancel</a>
+            <a href="/">Home</a>
+        </form>
+    </body>
+</html>
