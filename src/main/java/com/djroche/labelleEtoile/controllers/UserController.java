@@ -1,25 +1,18 @@
 package com.djroche.labelleEtoile.controllers;
 
 import com.djroche.labelleEtoile.dtos.UserDto;
-import com.djroche.labelleEtoile.dtos.UserMapper;
-import com.djroche.labelleEtoile.entities.User;
 import com.djroche.labelleEtoile.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/users")
+@Controller
+@RequestMapping("/users")  //("/api/users")
 public class UserController {
 
     @Autowired
@@ -30,32 +23,58 @@ public class UserController {
 
     // POST /users
     @PostMapping("/")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+    public String createUser(@ModelAttribute ("userDto") UserDto userDto) {
         // Hash the password before saving it to the database
         String passHash = passwordEncoder.encode(userDto.getPassword());
         userDto.setPassword(passHash);
-        User user = UserMapper.fromDto(userDto);  // Convert UserDto to User
-        UserDto savedUserDto = userService.createUser(user);
-        return new ResponseEntity<>(savedUserDto, HttpStatus.CREATED);
+        userService.createUser(userDto);
+        return "redirect:/users";
     }
 
-    // GET /users/{username}
-    @GetMapping("/{username}")
-    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
-        UserDto userDto = userService.getUserByUsername(username);
-        if (userDto == null) {
-            return ResponseEntity.notFound().build();
+    @GetMapping("/{id}")
+    public String getUserDetails(@PathVariable("id") Long id, Model model) {
+        UserDto user = userService.getUserById(id);
+        if (user == null) {
+            return "redirect:/users";
         }
-        return ResponseEntity.ok(userDto);
+        model.addAttribute("user", user);
+        return "userDetails";
+    }
+
+    @GetMapping("/new")
+    public String newUserForm(Model model) {
+        model.addAttribute("userDto", new UserDto());
+        return "userForm";
     }
 
     // GET /users
     @GetMapping("/")
-    public ResponseEntity<List<UserDto>> getAllUsers() {
-        List<UserDto> userDtos = userService.getAllUsers();
-        if (userDtos.isEmpty()) {
-            return ResponseEntity.notFound().build();
+    public String getAllUsers(Model model) {
+        List<UserDto> users = userService.getAllUsers();
+        model.addAttribute("users", users);
+        return "userList";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String editUserForm(@PathVariable("id") Long id, Model model) {
+        UserDto user = userService.getUserById(id);
+        if (user == null) {
+            return "redirect:/users";
         }
-        return ResponseEntity.ok(userDtos);
+        model.addAttribute("userDto", user);
+        return "user-form";
+    }
+
+    @PostMapping("/{id}/update")
+    public String updateUser(@PathVariable("id") Long id, @ModelAttribute("userDto") UserDto userDto) {
+        userDto.setId(id);
+        userService.updateUser(userDto);
+        return "redirect:/users/" + id;
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deleteUser(@PathVariable("id") Long id) {
+        userService.deleteUserById(id);
+        return "redirect:/users";
     }
 }
