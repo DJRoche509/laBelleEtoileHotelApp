@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -27,7 +28,7 @@ public class UserService {
     private BCryptPasswordEncoder passwordEncoder;
 
     //
-    public UserDto convertToDto(User user) {
+    private UserDto convertToDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
         userDto.setUsername(user.getUsername());
@@ -36,7 +37,7 @@ public class UserService {
         return userDto;
     }
 
-    public User convertToEntity(UserDto userDto) {
+    private User convertToEntity(UserDto userDto) {
         User user = new User();
         user.setId(userDto.getId());
         user.setUsername(userDto.getUsername());
@@ -46,10 +47,25 @@ public class UserService {
     }
 
     // uses the UserDto class instead of the User entity class in the createUser() method
-    public UserDto createUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public UserDto createUser(UserDto userDto) {
+        User user = convertToEntity(userDto);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         User savedUser = userRepository.save(user);
         return convertToDto(savedUser);
+    }
+
+    public UserDto getUserById(Long id){
+        Optional<User> user = userRepository.findById(id);
+        return  user.map(this::convertToDto).orElse(null);
+    }
+
+    public void updateUser(UserDto userDto) {
+        User user = convertToEntity(userDto);
+        userRepository.save(user);
+    }
+
+    public void deleteUserById(Long id) {
+        userRepository.deleteById(id);
     }
 
     public UserDto getUserByUsername(String username) {
