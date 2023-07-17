@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Reservation Form</title>
+    </head>
+    <body>
+        <h1>Reservation Form</h1>
+
+        <form th:object="${reservationDto}" th:action="@{/reservations}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+
+            <label for="customer.firstName">First Name:</label>
+            <input type="text" th:field="*{customer.firstName}" id="customer.firstName"/>
+
+            <br/>
+
+            <label for="customer.lastName">Last Name:</label>
+            <input type="text" th:field="*{customer.lastName}" id="customer.lastName"/>
+
+            <br/>
+
+            <label for="rooms">Rooms:</label>
+            <select th:field="*{rooms}" id="rooms" multiple="multiple">
+                <option th:each="room : ${availableRooms}" th:value="${room.id}" th:text="${room.roomNumber}"></option>
+            </select>
+
+            <br/>
+
+            <label for="dateIn">Date In:</label>
+            <input type="date" th:field="*{dateIn}" id="dateIn"/>
+
+            <br/>
+
+            <label for="dateOut">Date Out:</label>
+            <input type="date" th:field="*{dateOut}" id="dateOut"/>
+            <br/>
+            <button type="submit">Save</button>
+        </form>
+        <br/>
+        <a th:href="@{/reservations}">Back to List</a>
+    </body>
+</html>

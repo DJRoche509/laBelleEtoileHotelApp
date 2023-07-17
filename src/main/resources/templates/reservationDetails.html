@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Reservation Details</title>
+    </head>
+    <body>
+        <h1>Reservation Details</h1>
+        <table>
+            <tr>
+                <td>ID:</td>
+                <td th:text="${reservation.id}"></td>
+            </tr>
+            <tr>
+                <td>Customer:</td>
+                <td th:text="${reservation.customer.firstName} + ' ' + ${reservation.customer.lastName}"></td>
+            </tr>
+            <tr>
+                <td>Rooms:</td>
+                <td>
+                    <ul>
+                        <li th:each="room : ${reservation.rooms}" th:text="${room.roomNumber}"></li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Date In:</td>
+                <td th:text="${reservation.dateIn}"></td>
+            </tr>
+            <tr>
+                <td>Date Out:</td>
+                <td th:text="${reservation.dateOut}"></td>
+            </tr>
+            <tr>
+                <td>Number of Nights:</td>
+                <td th:text="${reservation.numberOfNights}"></td>
+            </tr>
+            <tr>
+                <td>Total Price:</td>
+                <td th:text="${reservation.totalPrice}"></td>
+            </tr>
+        </table>
+        <br/>
+        <a th:href="@{/reservations}">Back to List</a>
+    </body>
+</html>

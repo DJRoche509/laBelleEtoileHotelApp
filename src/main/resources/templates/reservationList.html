@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Reservation List</title>
+    </head>
+    <body>
+        <h1>Reservation List</h1>
+
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Date In</th>
+                <th>Date Out</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="reservation : ${reservations}">
+                <td th:text="${reservation.id}"></td>
+                <td th:text="${reservation.customer.firstName} + ' ' + ${reservation.customer.lastName}"></td>
+                <td th:text="${reservation.dateIn}"></td>
+                <td th:text="${reservation.dateOut}"></td>
+                <td><a th:href="@{/reservations/{reservationId}(reservationId=${reservation.id})}">Details</a></td>
+                <td><a th:href="@{/reservations/{reservationId}/edit(reservationId=${reservation.id})}">Edit</a></td>
+                <td>
+                    <form th:action="@{/reservations/{reservationId}(reservationId=${reservation.id})}" method="post">
+                        <input type="hidden" name="_method" value="delete"/>
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <br/>
+
+        <a th:href="@{/reservations/new}">New Reservation</a>
+    </body>
+</html>
