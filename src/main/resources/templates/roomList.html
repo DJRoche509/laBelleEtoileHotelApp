@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Room's List</title>
+    </head>
+    <body>
+        <h1>Room List</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Availability</th>
+                <th>Ready</th>
+                <th>Price</th>
+                <th>Booked</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="room : ${rooms}">
+                <td th:text="${room.id}"></td>
+                <td th:text="${room.roomType}"></td>
+                <td th:text="${room.availability}"></td>
+                <td th:text="${room.ready}"></td>
+                <td th:text="${room.price}"></td>
+                <td th:text="${room.booked}"></td>
+                <td>
+                    <a th:href="@{'/rooms/' + ${room.id}}" class="btn btn-primary">View</a>
+                    <a th:href="@{'/rooms/' + ${room.id} + '/edit'}" class="btn btn-warning">Edit</a>
+                    <a th:href="@{'/rooms/' + ${room.id} + '/delete'}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this room?')">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/rooms/new}" class="btn btn-primary">Add New Room</a>
+    </body>
+</html>

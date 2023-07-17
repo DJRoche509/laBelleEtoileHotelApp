@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Room Details</title>
+    </head>
+    <body>
+        <h1>Room Details</h1>
+        <p>ID: <span th:text="${room.id}"></span></p>
+        <p>Type: <span th:text="${room.roomType}"></span></p>
+        <p>Availability: <span th:text="${room.availability}"></span></p>
+        <p>Ready: <span th:text="${room.ready}"></span></p>
+        <p>Price: <span th:text="${room.price}"></span></p>
+        <p>Booked: <span th:text="${room.booked}"></span></p>
+        <a th:href="@{/rooms}" class="btn btn-primary">Back to List</a>
+    </body>
+</html>
