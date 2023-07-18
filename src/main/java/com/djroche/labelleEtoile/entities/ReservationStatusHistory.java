@@ -14,8 +14,11 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ReservationStatusHistory {
     @Id
-    @OneToOne
-    @JoinColumn(name = "reservation_id", referencedColumnName = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reservation_id", nullable = false)
     private Reservation reservation;
 
     @ManyToOne(fetch = FetchType.LAZY)
