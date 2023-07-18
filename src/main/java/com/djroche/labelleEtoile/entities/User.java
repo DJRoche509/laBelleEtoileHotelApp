@@ -1,11 +1,8 @@
 package com.djroche.labelleEtoile.entities;
 
-import com.djroche.labelleEtoile.dtos.UserDto;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity

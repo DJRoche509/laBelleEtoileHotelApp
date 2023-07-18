@@ -1,6 +1,5 @@
 package com.djroche.labelleEtoile.dtos;
 
-import com.djroche.labelleEtoile.entities.ReservationStatusHistory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
