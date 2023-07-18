@@ -28,7 +28,7 @@ public class ReservationStatusHistoryService {
 
     public ReservationStatusHistoryDto convertToDto(ReservationStatusHistory reservationStatusHistory) {
         ReservationStatusHistoryDto reservationStatusHistoryDto = new ReservationStatusHistoryDto();
-        reservationStatusHistoryDto.setReservationId(reservationStatusHistory.getReservation().getId());
+        reservationStatusHistoryDto.setReservationId(reservationStatusHistory.getId());
         reservationStatusHistoryDto.setStatusId(reservationStatusHistory.getStatus().getId());
         reservationStatusHistoryDto.setStatusName(reservationStatusHistory.getStatusName());
         reservationStatusHistoryDto.setDate(reservationStatusHistory.getDate());
@@ -36,8 +36,8 @@ public class ReservationStatusHistoryService {
     }
 
     public ReservationStatusHistory convertToEntity(ReservationStatusHistoryDto reservationStatusHistoryDto) {
-        ReservationStatusHistory reservationStatusHistory = new ReservationStatusHistory();
-        reservationStatusHistory.setReservation(reservationService.getReservationById(reservationStatusHistoryDto.getReservationId()));
+        ReservationStatusHistory reservationStatusHistory = new ReservationStatusHistory(reservationStatusHistoryDto.getId(), null, null, null);
+        reservationStatusHistory.setId(reservationStatusHistoryDto.getId());
         ReservationStatusDto statusDto = reservationStatusHistoryDto.getStatus();
         ReservationStatus status = new ReservationStatus();
         status.setId(statusDto.getId());
@@ -74,7 +74,7 @@ public class ReservationStatusHistoryService {
         Reservation reservation = reservationService.getReservationById(reservationId);
         ReservationStatus status = reservationStatusService.getReservationStatusByStatus(statusName);
         ReservationStatusHistory reservationStatusHistory = new ReservationStatusHistory();
-        reservationStatusHistory.setReservation(reservation);
+        reservationStatusHistory.setId(reservationId);
         reservationStatusHistory.setStatus(status);
         reservationStatusHistory.setDate(LocalDate.now());
         reservationStatusHistoryRepository.save(reservationStatusHistory);
