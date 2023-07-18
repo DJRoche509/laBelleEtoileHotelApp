@@ -39,9 +39,15 @@ public class UserService {
 
     private User convertToEntity(UserDto userDto) {
         User user = new User();
-        user.setId(userDto.getId());
-        user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword());
+        if (userDto.getId() != null) {
+            user.setId(userDto.getId());
+        }
+        if (userDto.getUsername() != null){
+            user.setUsername(userDto.getUsername());
+        }
+        if (userDto.getPassword() != null) {
+            user.setPassword(userDto.getPassword());
+        }
         user.setAdmin(userDto.getAdmin());
         return user;
     }
