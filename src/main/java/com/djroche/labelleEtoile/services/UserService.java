@@ -1,27 +1,17 @@
 package com.djroche.labelleEtoile.services;
 
 import com.djroche.labelleEtoile.dtos.UserDto;
-import com.djroche.labelleEtoile.entities.User;
-import com.djroche.labelleEtoile.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
+public interface UserService {
+    @Transactional
+    List<String> addUser(UserDto userDto);
+    List<String> userLogin(UserDto userDto);
+}
 
 
-/*
-* This class separates the conversion methods from the business logic methods and uses Java streams
-* for the getAllUsers() method.
-* */
-@Service
-@Transactional
-// UserService class with updated methods using DTOs
-public class UserService {
-    @Autowired
+    /*@Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -85,5 +75,4 @@ public class UserService {
     public List<UserDto> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream().map(this::convertToDto).collect(Collectors.toList());
-    }
-}
+    } */
