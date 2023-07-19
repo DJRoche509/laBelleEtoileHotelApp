@@ -2,6 +2,7 @@ package com.djroche.labelleEtoile.controllers;
 
 import com.djroche.labelleEtoile.dtos.UserDto;
 import com.djroche.labelleEtoile.services.UserService;
+import com.djroche.labelleEtoile.services.UserServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,24 +17,20 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     // POST /users
-    @PostMapping("/")
-    public String createUser(@ModelAttribute ("userDto") UserDto userDto) {
-        // Hash the password before saving it to the database
-        String passHash = passwordEncoder.encode(userDto.getPassword());
-        userDto.setPassword(passHash);
-        userService.createUser(userDto);
-        return "redirect:/users";
+    @PostMapping("/login")
+    public List<String> userLogin(@RequestBody UserDto userDto) {
+        return userServiceImpl.userLogin(userDto);
     }
 
     @GetMapping("/{id}")
     public String getUserDetails(@PathVariable("id") Long id, Model model) {
-        UserDto user = userService.getUserById(id);
+        UserDto user = userServiceImpl.getUserById(id);
         if (user == null) {
             return "redirect:/users";
         }
@@ -41,23 +38,24 @@ public class UserController {
         return "userDetails";
     }
 
-    @GetMapping("/new")
-    public String newUserForm(Model model) {
-        model.addAttribute("userDto", new UserDto());
-        return "userForm";
+    @GetMapping("/register")
+    public List<String> addUser(@RequestBody UserDto userDto) {
+        String passHash = passwordEncoder.encode(userDto.getPassword());
+        userDto.setPassword(passHash);
+        return userServiceImpl.addUser(userDto);
     }
 
     // GET /users
     @GetMapping("/")
     public String getAllUsers(Model model) {
-        List<UserDto> users = userService.getAllUsers();
+        List<UserDto> users = userServiceImpl.getAllUsers();
         model.addAttribute("users", users);
         return "userList";
     }
 
     @GetMapping("/{id}/edit")
     public String editUserForm(@PathVariable("id") Long id, Model model) {
-        UserDto user = userService.getUserById(id);
+        UserDto user = userServiceImpl.getUserById(id);
         if (user == null) {
             return "redirect:/users";
         }
@@ -68,13 +66,13 @@ public class UserController {
     @PostMapping("/{id}/update")
     public String updateUser(@PathVariable("id") Long id, @ModelAttribute("userDto") UserDto userDto) {
         userDto.setId(id);
-        userService.updateUser(userDto);
+        userServiceImpl.updateUser(userDto);
         return "redirect:/users/" + id;
     }
 
     @PostMapping("/{id}/delete")
     public String deleteUser(@PathVariable("id") Long id) {
-        userService.deleteUserById(id);
+        userServiceImpl.deleteUserById(id);
         return "redirect:/users";
     }
 }

@@ -4,8 +4,8 @@ import com.djroche.labelleEtoile.entities.User;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Data;
 
 import java.io.Serializable;
 
