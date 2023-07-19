@@ -62,7 +62,7 @@ public class UserController {
             return "redirect:/users";
         }
         model.addAttribute("userDto", user);
-        return "user-form";
+        return "userForm";
     }
 
     @PostMapping("/{id}/update")

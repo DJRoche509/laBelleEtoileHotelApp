@@ -5,14 +5,14 @@ import com.djroche.labelleEtoile.entities.RoomType;
 import com.djroche.labelleEtoile.services.RoomService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/rooms")
+@Controller
 public class RoomController {
 
     @Autowired
@@ -22,14 +22,14 @@ public class RoomController {
     public String getAllRooms(Model model) {
         List<RoomDto> rooms = roomService.getAllRooms();
         model.addAttribute("rooms", rooms);
-        return "rooms";
+        return "index";
     }
 
     @GetMapping("/{id}")
     public String getRoomById(@PathVariable Long id, Model model) {
         RoomDto roomDto = roomService.getRoomById(id);
         model.addAttribute("room", roomDto);
-        return "room";
+        return "roomList";
     }
 
     @PostMapping("/")
@@ -38,7 +38,7 @@ public class RoomController {
         return "redirect:/rooms";
     }
 
-    @GetMapping("/{roomId}/availability")
+    @GetMapping("/api/{roomId}/availability")
     @ResponseBody
     public boolean isRoomAvailable(@PathVariable Long roomId, @RequestParam("dateIn") String dateIn, @RequestParam("dateOut") String dateOut) {
         LocalDate dateInParsed = LocalDate.parse(dateIn);
